@@ -1,0 +1,63 @@
+.header {
+  background-color: #333; /* Example background color */
+  color: white; /* Example text color */
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px; /* Adjust max-width as needed */
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.header__wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px; /* Adjust height as needed */
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  max-width: 15%; /* Adjust the maximum width to make the logo smaller */
+}
+
+.logo a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: white; /* Example text color */
+}
+
+.logo a .slogan {
+  margin-left: 10px; /* Adjust spacing */
+}
+
+.nav {
+  flex: 1; /* Take up remaining space */
+  text-align: right; /* Align items to the right */
+}
+
+.menu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menuItem {
+  display: inline-block; /* Display items in a row */
+  margin-left: 20px; /* Adjust spacing between menu items */
+}
+
+.menuItem a {
+  text-decoration: none;
+  color: white; /* Example text color */
+  padding: 10px 15px;
+}
+
+.menuItem a:hover,
+.menuItem.active {
+  background-color: #555; /* Example hover/active background color */
+  border-radius: 5px; /* Example border radius */
+}

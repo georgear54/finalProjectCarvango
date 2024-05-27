@@ -1,0 +1,11 @@
+/* footer.module.css */
+.Footer {
+  background-color: #f9f9f9; /* Match the background color from home.module.css */
+  color: #333; /* Match the text color from home.module.css */
+  padding: 10px; /* Match the padding from home.module.css */
+  text-align: center; /* Center-align the content */
+  border-radius: 10px; /* Match the border-radius from home.module.css */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Match the box shadow from home.module.css */
+  font-family: Arial, sans-serif; /* Match the font family from home.module.css */
+  margin-top: 1%;
+}
