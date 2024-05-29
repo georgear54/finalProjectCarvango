@@ -1,0 +1,113 @@
+.nav {
+  background-color: rgb(8, 59, 60); /* Set background color to green */
+  padding: 10px 20px; /* Add padding for spacing */
+  display: flex; /* Use flexbox for layout */
+  align-items: center; /* Center align items vertically */
+  justify-content: space-between; /* Space out the logo and nav links */
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 50px; /* Set the height of the logo */
+  width: auto; /* Maintain aspect ratio */
+}
+
+.navContent {
+  display: flex; /* Use flexbox for layout */
+  align-items: center; /* Center align items vertically */
+  justify-content: space-between; /* Space out the nav links and button */
+  flex-grow: 1; /* Allow navContent to take available space */
+}
+
+.nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex; /* Display items in a row */
+  gap: 20px; /* Add gap between items */
+}
+
+.nav li {
+  margin: 0;
+}
+
+.nav a {
+  color: rgb(216, 152, 40); /* Set link color to yellow */
+  text-decoration: none;
+  font-family: "Arial", sans-serif; /* Apply font family */
+  font-weight: bold; /* Apply font weight */
+  transition: color 0.3s; /* Smooth transition for color change */
+  padding: 10px 15px;
+}
+
+.nav a:hover {
+  color: white; /* Set hover text color to white */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Add text shadow on hover */
+}
+
+.active a {
+  background-color: rgb(8, 59, 60); /* Set background color on active link */
+  color: white; /* Set active link text color to white */
+  border-radius: 5px;
+}
+
+.orderOnline {
+  color: rgb(216, 152, 40); /* Set button text color to yellow */
+  background-color: transparent; /* Transparent background to match links */
+  border: 1px solid rgb(216, 152, 40); /* Reduced border size */
+  padding: 5px 10px; /* Reduced padding */
+  text-decoration: none;
+  font-family: "Arial", sans-serif; /* Apply font family */
+  font-weight: bold; /* Apply font weight */
+  transition: color 0.3s, background-color 0.3s; /* Smooth transition for color and background change */
+  border-radius: 5px; /* Add border radius to match active link style */
+  cursor: pointer; /* Pointer cursor on hover */
+  margin-left: auto; /* Align button to the far right */
+}
+
+.orderOnline:hover {
+  color: white; /* Set hover text color to white */
+  background-color: rgb(216, 152, 40); /* Set hover background color to yellow */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Add text shadow on hover */
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .nav {
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start; /* Align items to the start */
+  }
+
+  .navContent {
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start; /* Align items to the start */
+    width: 100%; /* Full width for the content */
+  }
+
+  .nav ul {
+    flex-direction: column; /* Stack navigation items vertically */
+    width: 100%; /* Full width for the list */
+    gap: 10px; /* Reduced gap between items */
+  }
+
+  .nav li {
+    width: 100%; /* Full width for list items */
+  }
+
+  .nav a {
+    width: 100%; /* Full width for links */
+    padding: 10px 20px; /* Adjust padding for better spacing */
+    text-align: left; /* Align text to the left */
+  }
+
+  .orderOnline {
+    width: 100%; /* Full width for the button */
+    margin-left: 0; /* Reset left margin */
+    margin-top: 10px; /* Add top margin */
+    text-align: left; /* Align text to the left */
+  }
+}

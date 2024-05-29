@@ -1,21 +1,23 @@
 import { Route, Routes } from "react-router-dom";
 import Header from "./components/Header/Header";
-import Footer from './components/footer/Footer'
-import AboutPage from "./components/aboutUs/AboutPage";
+import Footer from "./components/footer/Footer";
+import NavCase from "./components/Header/nav/navCase";
+import Main from "./components/main/Main";
 function App() {
-	const projectName = "Test Project"
+  let flag = true;
+  if (
+    window.location.pathname === "/signup" ||
+    window.location.pathname === "/login" ||
+    window.location.pathname === "/" ||
+    window.location.pathname === ""
+  ) {
+    flag = true;
+  }
   return (
     <div className="App">
-      <Header/>
-		<div className="main">
-      <Routes>
-        
-        <Route path="/about" element={<AboutPage />} />
-        {/* <Route path="/contact" element={<ContactPage />} /> */}
-        {/* <Route path="/" element={<MainPage data={projectName}/>} /> */}
-      </Routes>
-		</div>
-		<Footer/>
+      <Header flag={flag} />
+      <Main />
+      <Footer />
     </div>
   );
 }

@@ -1,5 +1,18 @@
 .main {
-  margin: auto;
-  
-  max-width: 90%;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 5%;
+background-color: RGB(255, 255, 240);
+}
+.main > div {
+  flex: 50%;
+}
+.main > div > img {
+  width: 100%;
+}
+.main > div > p:last-of-type {
+  font-size: 1rem;
+  color: #555;
+  margin-top: 1rem;
 }
