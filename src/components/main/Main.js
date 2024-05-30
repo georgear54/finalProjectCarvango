@@ -6,8 +6,7 @@ export default function Main() {
       <div>
         <h1>Why Choosing Us?</h1>
         <p>
-          dfgfdgfdsgfdgfdgrewtretgf dbcvbvcxbdsfggretregfdgfvxcvsdferffdvd
-          fvcxvdsfdsfdsfdsfcvc vcdsfdsfdvcvcvdsfdsfsdvcxzvdz fdsfsdfcxvxzvdszf
+          hello fucker's !!!!
         </p>
         <p>
           Immerse yourself in Specialty Coffee and Irresistible Asian Rolls,
