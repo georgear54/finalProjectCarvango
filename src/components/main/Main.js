@@ -10,7 +10,7 @@ export default function Main() {
         </p>
         <p>
           Immerse yourself in Specialty Coffee and Irresistible Asian Rolls,
-          Crafted with Love and Passion. Let's "nou(ri)sh" your way!
+          Crafted with Lovdwswdcsdcsdce and Passion. Let's "nou(ri)sh" your way!
         </p>
       </div>
 
