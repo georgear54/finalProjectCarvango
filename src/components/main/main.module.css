@@ -3,16 +3,41 @@
   display: flex;
   flex-wrap: wrap;
   padding: 5%;
-background-color: RGB(255, 255, 240);
+  background: url(../../assets/imgs/backgroundForMain.jpg);
+  background-size: cover;
+  background-position: right bottom;
+  background-attachment: fixed;
 }
+
 .main > div {
   flex: 50%;
+  background-color: rgba(153, 157, 151, 0.1);
 }
+
 .main > div > img {
   width: 100%;
 }
+
 .main > div > p:last-of-type {
-  font-size: 1rem;
-  color: #555;
+  font-size: 2rem;
+  color: #131313;
   margin-top: 1rem;
+}
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+  .main {
+    padding: 2%;
+    flex-direction: column;
+    background-position: center bottom; /* Adjust background position for better view on mobile */
+  }
+  
+  .main > div {
+    flex: 100%;
+  }
+  
+  .main > div > p:last-of-type {
+    font-size: 1.5rem; /* Adjust font size for better readability on mobile */
+    margin-top: 0.5rem;
+  }
 }

@@ -5,13 +5,10 @@ export default function Main() {
     <main className={classes.main}>
       <div>
         <h1>Why Choosing Us?</h1>
+        <p>helloooooooooooooooo</p>
         <p>
-          hello fucker's !!!!
-        </p>
-        <p>
-          Immerse yourself in Specialty Coffee and Irresistible Asian Rolls,
-          aiofsj
-          Crafted with Lovdwswdcsdcsdce and Passion. Let's "nou(ri)sh" your way!
+
+          
         </p>
       </div>
 
