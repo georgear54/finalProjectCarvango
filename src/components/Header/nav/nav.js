@@ -31,7 +31,7 @@ export default function Nav(props) {
           <CustomLink to="/shop">Shop</CustomLink>
         </ul>
         <div className={classes.orderOnline}>
-          <CustomLink>Order Online</CustomLink>
+          <CustomLink to="/order-online">Order Online</CustomLink>
         </div>
       </nav>
     </div>
