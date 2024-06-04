@@ -26,7 +26,7 @@ export default function Nav(props) {
         <ul>
           <CustomLink to="/menu">Menu</CustomLink>
           <CustomLink to="/find-truck">Find Truck</CustomLink>
-          <CustomLink to="/book-truck">Book Truck</CustomLink>
+          <CustomLink to="/bookTruck">Book Truck</CustomLink>
           <CustomLink to="/catering">Catering</CustomLink>
           <CustomLink to="/shop">Shop</CustomLink>
         </ul>
