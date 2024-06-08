@@ -4,25 +4,33 @@ import classes from "./menu.module.css"; // Importing CSS Modules
 import { NewFoodItems, formatPrice } from "../Data/foodData";
 
 const MenuPage = () => {
-  const [meals, setMeals] = useState(NewFoodItems["Meal"]);
+  const [meals, setMeals] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/menu")
+      .get("http://localhost:3001/menu/menu")
       .then((response) => {
-        setMeals(response.data);
+        const mergedMeals = response.data.map((meal) => {
+          const imageData = NewFoodItems.find(
+            (item) => item.name === meal.name
+          );
+          return {
+            ...meal,
+            img: imageData ? imageData.img : "../../assets/imgs/aMeal.jpg.png",
+          };
+        });
+        setMeals(mergedMeals);
       })
       .catch((error) => {
         setError("There was an error fetching the meals!");
         console.error("There was an error fetching the meals!", error);
-        // Fallback to static data
+        // Use static data as fallback
         setMeals(NewFoodItems["Meal"]);
       });
   }, []);
 
   const handleAddToCart = (meal) => {
-    // Logic to add the meal to the cart
     console.log(`${meal.name} added to cart!`);
   };
 
@@ -42,8 +50,9 @@ const MenuPage = () => {
                 className={classes.mealImage}
               />
               <div className={classes.mealInfo}>
-                <h2>{meal.name}</h2>
-                <p>{formatPrice(meal.price)}</p>
+                <h2>{meal.name}</h2> {/* Fetching name from SQL */}
+                <p>{meal.section}</p> {/* Fetching section from SQL */}
+                <p>{formatPrice(meal.price)}</p> {/* Fetching price from SQL */}
                 <button
                   onClick={() => handleAddToCart(meal)}
                   className={classes.buyButton}
@@ -51,7 +60,6 @@ const MenuPage = () => {
                   Add to Cart
                 </button>
               </div>
-              {/* Assuming ingredients are part of the meal object */}
               {meal.ingredients && (
                 <div className={classes.ingredients}>
                   <h3>Ingredients:</h3>
@@ -69,9 +77,6 @@ const MenuPage = () => {
           ))}
         </div>
       </main>
-      <footer className={classes.menuFooter}>
-        <p>&copy; 2024 Falafel Food Order System</p>
-      </footer>
     </div>
   );
 };
