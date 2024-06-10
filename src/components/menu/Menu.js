@@ -16,10 +16,16 @@ const MenuPage = () => {
           const imageData = NewFoodItems.find(
             (item) => item.name === meal.name
           );
-          console.log("Image data:", imageData);
+          const ingredients = meal.ingredients
+            ? meal.ingredients.split(',').map((ing) => {
+                const [name, quantity, unit] = ing.split(':');
+                return { name, quantity, unit };
+              })
+            : [];
           return {
             ...meal,
             img: imageData ? imageData.img : "../../assets/imgs/aMeal.jpg.png",
+            ingredients,
           };
         });
         console.log("Merged meals:", mergedMeals);
@@ -67,10 +73,9 @@ const MenuPage = () => {
                 <div className={classes.ingredients}>
                   <h3>Ingredients:</h3>
                   <ul>
-                    {meal.ingredients.map((ingredient) => (
-                      <li key={ingredient.ID}>
-                        {ingredient.name} - {ingredient.quantity}{" "}
-                        {ingredient.unit}
+                    {meal.ingredients.map((ingredient, index) => (
+                      <li key={index}>
+                        {ingredient.name} - {ingredient.quantity} {ingredient.unit}
                       </li>
                     ))}
                   </ul>
