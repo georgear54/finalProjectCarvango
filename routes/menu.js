@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const doQuery = require("../be/database/query");
+const doQuery = require("../database/query");
 
 console.log("befor");
 router.get("/", async (req, res) => {
