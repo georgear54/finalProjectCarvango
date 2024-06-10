@@ -4,7 +4,6 @@ const path = require("path");
 
 // Create an Express application instance
 const app = express();
-console.log("fguenia");
 
 const aboutRoutes = require("./routes/about");
 const bookRoutes = require("./routes/book");
