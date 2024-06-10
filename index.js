@@ -4,6 +4,7 @@ const path = require("path");
 
 // Create an Express application instance 
 const app = express();
+console.log("Af")
 
 const aboutRoutes = require("./routes/about");
 const bookRoutes = require("./routes/book");
