@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+<<<<<<< HEAD
 const doQuery = require("../be/database/query");
 
 console.log("befor");
@@ -26,3 +27,11 @@ router.get("/", async (req, res) => {
 });
 
 module.exports = router;
+=======
+
+router.get("/menu", (req, res) => {
+  res.send("menu page");
+});
+
+module.exports = router;
+>>>>>>> ee3acccaa78a2a2bfbe494e6d6514c9ce8ea4dc7
