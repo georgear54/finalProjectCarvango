@@ -4,6 +4,7 @@ import Nav from "./nav";
 import Main from "../../main/Main";
 import Menu from "../../menu/Menu";
 import Booktruck from "../../BookTruck/BookTruck";
+import Catering from "../../catering/Catering";
 
 function NavCase({ flag }) {
   return (
@@ -16,7 +17,7 @@ function NavCase({ flag }) {
           <Route path="/menu" element={<Menu />} />
           <Route path="/find-truck" element={<FindTruck />} />
           <Route path="/bookTruck" element={<Booktruck />} />
-          <Route path="/catering" element={<Catering />} />
+          <Route path="/catering" element={<Catering/>} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/order-online" element={<OrderOnline />} />
           <Route path="*" element={<Navigate to="/home" />} />
@@ -31,6 +32,6 @@ export default NavCase;
 // Placeholder components for other routes
 const FindTruck = () => <div>Find Truck Page</div>;
 // const BookTruck = () => <div>Book Truck Page</div>;
-const Catering = () => <div>Catering Page</div>;
+// const Catering = () => <div>Catering Page</div>;
 const Shop = () => <div>Shop Page</div>;
 const OrderOnline = () => <div>Order Online Page</div>;
