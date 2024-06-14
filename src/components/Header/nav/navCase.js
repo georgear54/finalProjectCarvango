@@ -16,7 +16,7 @@ function NavCase({ flag }) {
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/home" element={<Main />} />
           <Route path="/menu" element={<Menu />} />
-          <Route path="/find-truck" element={<FindTruck />} />
+          {/* <Route path="/find-truck" element={<FindTruck />} /> */}
           <Route path="/bookTruck" element={<Booktruck />} />
           <Route path="/catering" element={<Catering/>} />
           <Route path="/shop" element={<Shop />} />
