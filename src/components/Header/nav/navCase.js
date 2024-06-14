@@ -5,6 +5,7 @@ import Main from "../../main/Main";
 import Menu from "../../menu/Menu";
 import Booktruck from "../../BookTruck/BookTruck";
 import Catering from "../../catering/Catering";
+import FindTruck from "../../findTruck/FindTruck";
 
 function NavCase({ flag }) {
   return (
@@ -30,7 +31,7 @@ function NavCase({ flag }) {
 export default NavCase;
 
 // Placeholder components for other routes
-const FindTruck = () => <div>Find Truck Page</div>;
+// const FindTruck = () => <div>Find Truck Page</div>;
 // const BookTruck = () => <div>Book Truck Page</div>;
 // const Catering = () => <div>Catering Page</div>;
 const Shop = () => <div>Shop Page</div>;

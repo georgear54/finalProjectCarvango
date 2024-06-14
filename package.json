@@ -18,7 +18,8 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.23.1",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+      "react-leaflet": "^3.3.1"
   },
   "scripts": {
     "start": "cross-env PORT=3001 react-scripts start",
