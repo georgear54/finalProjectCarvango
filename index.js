@@ -19,7 +19,7 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, "fe/build")));
+app.use(express.static(path.join(__dirname, "fe")));
 
 // Middleware to log incoming requests
 app.use((req, res, next) => {

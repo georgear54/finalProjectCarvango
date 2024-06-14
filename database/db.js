@@ -7,5 +7,4 @@ const pool = mysql.createPool({
   password: "",
   database: "alwadiflafel",
 });
-//https://vscode.dev/github/georgear54/finalProjectCarvango/blob/mainwadiflafel.sql
 module.exports = pool.promise();
