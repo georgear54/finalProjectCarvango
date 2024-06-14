@@ -1,7 +1,20 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import classes from "./menu.module.css"; // Importing CSS Modules
-import { NewFoodItems } from "../Data/foodData"; // If you still want to use images from here
+
+const imageMap = {
+  "Spaghetti Carbonara": require("../../assets/imgs/aMeal.jpg.png"),
+  "Margherita Pizza": require("../../assets/imgs/bMeal.jpg.png"),
+  "Caesar Salad": require("../../assets/imgs/cMeal.jpg.png"),
+  "Chicken Alfredo": require("../../assets/imgs/dMeal.jpg.png"),
+  "Beef Tacos": require("../../assets/imgs/eMeal.jpg.png"),
+  "Vegan Burger": require("../../assets/imgs/fMeal.jpg.png"),
+  "Grilled Salmon": require("../../assets/imgs/gMeal.jpg.png"),
+  "Chocolate Cake": require("../../assets/imgs/hMeal.jpg.png"),
+  "French Fries": require("../../assets/imgs/iMeal.jpg.png"),
+  "Mushroom Risotto": require("../../assets/imgs/jMeal.jpg.png"),
+  // Add more mappings if you have more images
+};
 
 const MenuPage = () => {
   const [meals, setMeals] = useState([]);
@@ -9,22 +22,20 @@ const MenuPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/menu") // Ensure this matches your backend port and path
+      .get("http://localhost:3001/menu")
       .then((response) => {
         console.log("Fetched data:", response.data);
         const mergedMeals = response.data.map((meal) => {
-          const imageData = NewFoodItems.find(
-            (item) => item.name === meal.name
-          );
-          const ingredients = meal.ingredients
-            ? meal.ingredients.split(',').map((ing) => {
-                const [name, quantity, unit] = ing.split(':');
-                return { name, quantity, unit };
-              })
-            : [];
+          const img =
+            imageMap[meal.name] || "../../assets/imgs/defaultMeal.jpg";
+          const ingredients = meal.ingredients.map((ing) => ({
+            name: ing.name,
+            quantity: ing.quantity,
+            unit: ing.unit,
+          }));
           return {
             ...meal,
-            img: imageData ? imageData.img : "../../assets/imgs/aMeal.jpg.png",
+            img,
             ingredients,
           };
         });
@@ -34,7 +45,6 @@ const MenuPage = () => {
       .catch((error) => {
         setError("There was an error fetching the meals!");
         console.error("There was an error fetching the meals!", error);
-        setMeals(NewFoodItems["Meal"]);
       });
   }, []);
 
@@ -58,13 +68,14 @@ const MenuPage = () => {
                 className={classes.mealImage}
               />
               <div className={classes.mealInfo}>
-                <h2>{meal.name}</h2> {/* Fetching name from SQL */}
-                <p>{meal.description}</p> {/* Fetching description from SQL */}
-                <p>{meal.allergies}</p> {/* Fetching allergies from SQL */}
-                <p>{meal.price}</p> {/* Fetching price from SQL */}
+                <h2>{meal.name}</h2>
+                <p>{meal.description}</p>
+                <p>{meal.allergies}</p>
+                <p>{meal.price}</p>
                 <button
                   onClick={() => handleAddToCart(meal)}
                   className={classes.buyButton}
+                  aria-label={`Add ${meal.name} to cart`}
                 >
                   Add to Cart
                 </button>
@@ -75,7 +86,8 @@ const MenuPage = () => {
                   <ul>
                     {meal.ingredients.map((ingredient, index) => (
                       <li key={index}>
-                        {ingredient.name} - {ingredient.quantity} {ingredient.unit}
+                        {ingredient.name} - {ingredient.quantity}{" "}
+                        {ingredient.unit}
                       </li>
                     ))}
                   </ul>
