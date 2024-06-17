@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
-import classes from "./menu.module.css"; // Importing CSS Modules
+import classes from "./menu.module.css";
+import {CartContext} from "../../contexts/CartContext"; // Import CartContext
 
 const imageMap = {
   "Spaghetti Carbonara": require("../../assets/imgs/aMeal.jpg.png"),
@@ -19,6 +20,7 @@ const imageMap = {
 const MenuPage = () => {
   const [meals, setMeals] = useState([]);
   const [error, setError] = useState(null);
+  const { dispatch } = useContext(CartContext); // Use the CartContext
 
   useEffect(() => {
     axios
@@ -49,6 +51,7 @@ const MenuPage = () => {
   }, []);
 
   const handleAddToCart = (meal) => {
+    dispatch({ type: "ADD_TO_CART", payload: meal });
     console.log(`${meal.name} added to cart!`);
   };
 
