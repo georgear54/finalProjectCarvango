@@ -1,0 +1,42 @@
+/* src/components/shop/shop.module.css */
+.shopPage {
+  padding: 20px;
+  text-align: center;
+}
+
+.productGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.productItem {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 20px;
+  width: 200px;
+  text-align: left;
+}
+
+.productItem h2 {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.productItem p {
+  margin-bottom: 10px;
+}
+
+.buyButton {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+.buyButton:hover {
+  background-color: #218838;
+}

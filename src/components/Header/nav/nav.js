@@ -39,6 +39,9 @@ export default function Nav(props) {
           </div>
         </div>
       </nav>
+      <div className={classes.cart}>
+        <Link to="/cart">Cart</Link>
+      </div>
     </div>
   );
 }

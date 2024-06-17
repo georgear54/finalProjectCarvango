@@ -1,16 +1,16 @@
-// import React, { useEffect, useRef } from "react";
-// import { Loader } from "@googlemaps/js-api-loader";
-// import classes from "./findTruck.module.css";
+import React, { useEffect, useRef } from "react";
+import { Loader } from "@googlemaps/js-api-loader";
+import classes from "./findTruck.module.css";
 
-// const containerStyle = {
-//   width: "100%",
-//   height: "400px",
-// };
+const containerStyle = {
+  width: "100%",
+  height: "400px",
+};
 
-// const center = {
-//   lat: 52.256599944765746,
-//   lng: -7.12747034956677,
-// };
+const center = {
+  lat: 52.256599944765746,
+  lng: -7.12747034956677,
+};
 
 // const FindTruck = () => {
 //   const mapRef = useRef(null);
@@ -52,4 +52,4 @@
 //   );
 // };
 
-// export default FindTruck;
+export default FindTruck;
