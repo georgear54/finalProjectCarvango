@@ -2,6 +2,10 @@ import React, { createContext, useReducer } from "react";
 
 const CartContext = createContext();
 
+const initialState = {
+  cart: [],
+};
+
 const cartReducer = (state, action) => {
   switch (action.type) {
     case "ADD_TO_CART":
@@ -26,23 +30,23 @@ const cartReducer = (state, action) => {
     case "REMOVE_FROM_CART":
       return {
         ...state,
-        cart: state.cart.filter((item) => item.ID !== action.payload.id),
+        cart: state.cart.filter((item) => item.ID !== action.payload.ID),
       };
-    case "INCREMENT_QUANTITY":
+    case "DECREASE_QUANTITY":
       return {
         ...state,
         cart: state.cart.map((item) =>
-          item.ID === action.payload.id
-            ? { ...item, quantity: item.quantity + 1 }
+          item.ID === action.payload.ID
+            ? { ...item, quantity: item.quantity > 1 ? item.quantity - 1 : 1 }
             : item
         ),
       };
-    case "DECREMENT_QUANTITY":
+    case "INCREASE_QUANTITY":
       return {
         ...state,
         cart: state.cart.map((item) =>
-          item.ID === action.payload.id && item.quantity > 1
-            ? { ...item, quantity: item.quantity - 1 }
+          item.ID === action.payload.ID
+            ? { ...item, quantity: item.quantity + 1 }
             : item
         ),
       };
@@ -52,7 +56,7 @@ const cartReducer = (state, action) => {
 };
 
 const CartProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(cartReducer, { cart: [] });
+  const [state, dispatch] = useReducer(cartReducer, initialState);
 
   return (
     <CartContext.Provider value={{ state, dispatch }}>
