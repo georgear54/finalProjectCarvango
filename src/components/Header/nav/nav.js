@@ -30,8 +30,13 @@ export default function Nav(props) {
           <CustomLink to="/catering">Catering</CustomLink>
           <CustomLink to="/shop">Shop</CustomLink>
         </ul>
-        <div className={classes.orderOnline}>
-          <CustomLink to="/order-online">Order Online</CustomLink>
+        <div className={classes.buttonGroup}>
+          <div className={classes.logIn}>
+            <CustomLink to="/logIn">Log In</CustomLink>
+          </div>
+          <div className={classes.orderOnline}>
+            <CustomLink to="/order-online">Order Online</CustomLink>
+          </div>
         </div>
       </nav>
     </div>
