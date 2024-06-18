@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import classes from "./menu.module.css";
 import { CartContext } from "../../contexts/CartContext";
+import IngredientsModal from "../IngredientModal/IngredientModal";
 
 const imageMap = {
   "Spaghetti Carbonara": require("../../assets/imgs/aMeal.jpg.png"),
@@ -19,6 +20,8 @@ const imageMap = {
 const MenuPage = () => {
   const [meals, setMeals] = useState([]);
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedMeal, setSelectedMeal] = useState(null);
   const { dispatch } = useContext(CartContext);
 
   useEffect(() => {
@@ -26,22 +29,12 @@ const MenuPage = () => {
       .get("http://localhost:3001/menu")
       .then((response) => {
         console.log("Fetched data:", response.data);
-        const mergedMeals = response.data.map((meal) => {
-          const img =
-            imageMap[meal.name] || "../../assets/imgs/defaultMeal.jpg";
-          const ingredients = meal.ingredients.map((ing) => ({
-            name: ing.name,
-            quantity: ing.quantity,
-            unit: ing.unit,
-          }));
-          return {
+        setMeals(
+          response.data.map((meal) => ({
             ...meal,
-            img,
-            ingredients,
-          };
-        });
-        console.log("Merged meals:", mergedMeals);
-        setMeals(mergedMeals);
+            img: imageMap[meal.name] || "../../assets/imgs/aMeal.jpg.png",
+          }))
+        );
       })
       .catch((error) => {
         setError("There was an error fetching the meals!");
@@ -50,8 +43,20 @@ const MenuPage = () => {
   }, []);
 
   const handleAddToCart = (meal) => {
-    dispatch({ type: "ADD_TO_CART", payload: meal });
-    console.log(`${meal.name} added to cart!`);
+    setSelectedMeal(meal);
+    setShowModal(true);
+  };
+
+  const handleAddIngredients = (mealWithIngredients) => {
+    dispatch({ type: "ADD_TO_CART", payload: mealWithIngredients });
+    console.log(`${mealWithIngredients.name} added to cart!`);
+    setShowModal(false);
+    setSelectedMeal(null);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedMeal(null);
   };
 
   return (
@@ -72,8 +77,8 @@ const MenuPage = () => {
               <div className={classes.mealInfo}>
                 <h2>{meal.name}</h2>
                 <p>{meal.description}</p>
-                <p>{meal.allergies}</p>
-                <p>{meal.price}</p>
+                <p>Allergies: {meal.allergies}</p>
+                <p>Price: ${parseFloat(meal.price).toFixed(2)}</p>
                 <button
                   onClick={() => handleAddToCart(meal)}
                   className={classes.buyButton}
@@ -99,6 +104,13 @@ const MenuPage = () => {
           ))}
         </div>
       </main>
+      {showModal && (
+        <IngredientsModal
+          meal={selectedMeal}
+          onAdd={handleAddIngredients}
+          onClose={closeModal}
+        />
+      )}
     </div>
   );
 };
