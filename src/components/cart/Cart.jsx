@@ -1,68 +1,85 @@
-import React, { useContext } from "react";
+//cartjsx
+import React, { useContext, useState } from "react";
 import { CartContext } from "../../contexts/CartContext";
 import classes from "./cart.module.css";
+import IngredientsModal from "../IngredientModal/IngredientsModal";
 
 const Cart = () => {
-  const { state, dispatch } = useContext(CartContext);
+  const { cart, dispatch } = useContext(CartContext);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedMeal, setSelectedMeal] = useState(null);
 
-  const handleRemoveFromCart = (item) => {
-    dispatch({ type: "REMOVE_FROM_CART", payload: item });
+  const handleAddToCart = (meal) => {
+    setSelectedMeal(meal);
+    setShowModal(true);
   };
 
-  const handleDecreaseQuantity = (item) => {
-    dispatch({ type: "DECREASE_QUANTITY", payload: item });
+  const handleAddIngredients = (mealWithIngredients) => {
+    dispatch({ type: "ADD_TO_CART", payload: mealWithIngredients });
+    setShowModal(false);
   };
 
-  const handleIncreaseQuantity = (item) => {
-    dispatch({ type: "INCREASE_QUANTITY", payload: item });
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const incrementQuantity = (item) => {
+    dispatch({ type: "INCREMENT_QUANTITY", payload: item });
+  };
+
+  const removeFromCart = (index) => {
+    dispatch({ type: "REMOVE_FROM_CART", payload: index });
   };
 
   const calculateSubtotal = () => {
-    return state.cart.reduce(
-      (acc, item) => acc + parseFloat(item.price) * item.quantity,
-      0
-    );
+    return cart
+      .reduce((total, item) => total + item.price * (item.quantity || 1), 0)
+      .toFixed(2);
   };
 
   return (
     <div className={classes.cartPage}>
-      <h1 className={classes.cartTitle}>Your Cart Items</h1>
-      {state.cart.length === 0 ? (
-        <p>Your cart is empty</p>
-      ) : (
-        <div className={classes.cartItems}>
-          {state.cart.map((item) => (
-            <div key={item.ID} className={classes.cartItem}>
-              <img
-                src={item.img}
-                alt={item.name}
-                className={classes.cartImage}
-              />
-              <div className={classes.cartInfo}>
-                <h2>{item.name}</h2>
-                <p>Price: ${item.price}</p>
-                <div className={classes.cartQuantity}>
-                  <button onClick={() => handleDecreaseQuantity(item)}>
-                    -
-                  </button>
-                  <span>{item.quantity}</span>
-                  <button onClick={() => handleIncreaseQuantity(item)}>
-                    +
-                  </button>
-                </div>
-                <button
-                  onClick={() => handleRemoveFromCart(item)}
-                  className={classes.removeButton}
-                >
-                  Remove
-                </button>
+      <h1>Your Cart Items</h1>
+      <div className={classes.cartItems}>
+        {cart.map((item, index) => (
+          <div key={item.ID} className={classes.cartItem}>
+            <img src={item.img} alt={item.name} className={classes.cartImage} />
+            <div className={classes.cartInfo}>
+              <h2>{item.name}</h2>
+              <p>{item.description}</p>
+              <p>Allergies: {item.allergies}</p>
+              <p>Price: ${item.price.toFixed(2)}</p>
+              <h3>Ingredients:</h3>
+              <ul>
+                {item.ingredients.map((ingredient, idx) => (
+                  <li key={idx}>
+                    {ingredient.name} - {ingredient.quantity} {ingredient.unit}
+                  </li>
+                ))}
+              </ul>
+              <div className={classes.quantityControl}>
+                <span>{item.quantity || 1}</span>
+                <button onClick={() => handleAddToCart(item)}>+</button>
               </div>
+              <button
+                onClick={() => removeFromCart(index)}
+                className={classes.removeButton}
+              >
+                Remove from Cart
+              </button>
             </div>
-          ))}
-          <div className={classes.cartSubtotal}>
-            <p>Subtotal: ${calculateSubtotal().toFixed(2)}</p>
           </div>
-        </div>
+        ))}
+      </div>
+      <div className={classes.subtotal}>
+        <h3>Subtotal: ${calculateSubtotal()}</h3>
+      </div>
+      {showModal && (
+        <IngredientsModal
+          meal={selectedMeal}
+          onAdd={handleAddIngredients}
+          onClose={handleCloseModal}
+        />
       )}
     </div>
   );
