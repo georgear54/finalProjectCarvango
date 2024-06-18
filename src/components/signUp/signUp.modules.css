@@ -20,20 +20,10 @@
   margin-bottom: 20px;
 }
 
-.sign-up-form-group-label {
-  margin-bottom: 5px;
-}
-
 .sign-up-form-control {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  width: calc(100% - 16px); /* Responsive width calculation */
-}
-
-.sign-up-form-control[type="text"],
-.sign-up-form-control[type="password"],
-.sign-up-form-control[type="number"] {
   width: calc(100% - 16px); /* Responsive width calculation */
 }
 
@@ -54,4 +44,11 @@
 
 .sign-up-btn-primary:hover {
   background-color: #0056b3;
+}
+
+.sign-up-success-message {
+  color: green;
+  font-size: 14px;
+  margin-top: 10px;
+  text-align: center;
 }
