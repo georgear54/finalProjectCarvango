@@ -13,14 +13,19 @@ function SignUp() {
   const [lastName, setLastName] = useState("");
   const [firstName, setFirstName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
+  const [retypePassword, setRetypePassword] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   // State variables for validation
   const [emailValidation, setEmailValidation] = useState({});
+  const [passwordValidation, setPasswordValidation] = useState({});
+  const [retypePasswordValidation, setRetypePasswordValidation] = useState({});
 
-  // Regular expressions for email validation
+  // Regular expressions for validation
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/;
 
   // Validate email
   const validateEmail = (email) => {
@@ -31,6 +36,33 @@ function SignUp() {
     } else {
       validationAnswer.status = true;
       validationAnswer.text = "Validation successful";
+    }
+    return validationAnswer;
+  };
+
+  // Validate password
+  const validatePassword = (password) => {
+    const validationAnswer = {};
+    if (!passwordPattern.test(password)) {
+      validationAnswer.status = false;
+      validationAnswer.text =
+        "Password must contain at least 8 characters, including uppercase, lowercase, and a number";
+    } else {
+      validationAnswer.status = true;
+      validationAnswer.text = "Validation successful";
+    }
+    return validationAnswer;
+  };
+
+  // Validate retype password
+  const validateRetypePassword = (password, retypePassword) => {
+    const validationAnswer = {};
+    if (password !== retypePassword) {
+      validationAnswer.status = false;
+      validationAnswer.text = "Passwords do not match";
+    } else {
+      validationAnswer.status = true;
+      validationAnswer.text = "Passwords match";
     }
     return validationAnswer;
   };
@@ -92,6 +124,21 @@ function SignUp() {
     setEmailValidation(validateEmail(e.target.value));
   };
 
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    setPasswordValidation(validatePassword(e.target.value));
+    setRetypePasswordValidation(
+      validateRetypePassword(e.target.value, retypePassword)
+    );
+  };
+
+  const handleRetypePasswordChange = (e) => {
+    setRetypePassword(e.target.value);
+    setRetypePasswordValidation(
+      validateRetypePassword(password, e.target.value)
+    );
+  };
+
   const handleRoleChange = (e) => {
     setRole(e.target.value);
   };
@@ -142,6 +189,7 @@ function SignUp() {
 
     const userData = {
       email,
+      password,
       role,
       city,
       street_number: streetNumber,
@@ -151,7 +199,6 @@ function SignUp() {
     };
 
     try {
-      console.log(phoneNumber, email);
       // First, check if the email already exists
       const checkResponse = await axios.post(
         "http://localhost:3001/signUp/checkSignup",
@@ -203,6 +250,18 @@ function SignUp() {
       <h2 className="text-center">Sign Up</h2>
       <form onSubmit={handleSubmit} className="sign-up-form">
         <div className="sign-up-form-group">
+          <select
+            value={role}
+            onChange={handleRoleChange}
+            required
+            name="role"
+            className="sign-up-form-control"
+          >
+            <option value="Customer">Customer</option>
+            <option value="Admin">Admin</option>
+          </select>
+        </div>
+        <div className="sign-up-form-group">
           <input
             type="email"
             placeholder="Email"
@@ -218,23 +277,80 @@ function SignUp() {
             </span>
           )}
         </div>
+        {role === "Admin" && (
+          <>
+            <div className="sign-up-form-group">
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={handlePasswordChange}
+                required
+                name="password"
+                className="sign-up-form-control"
+              />
+              {!passwordValidation.status && (
+                <span className="sign-up-error-message">
+                  {passwordValidation.text}
+                </span>
+              )}
+            </div>
+            <div className="sign-up-form-group">
+              <input
+                type="password"
+                placeholder="Retype Password"
+                value={retypePassword}
+                onChange={handleRetypePasswordChange}
+                required
+                name="retypePassword"
+                className="sign-up-form-control"
+              />
+              {!retypePasswordValidation.status && (
+                <span className="sign-up-error-message">
+                  {retypePasswordValidation.text}
+                </span>
+              )}
+            </div>
+          </>
+        )}
         <div className="sign-up-form-group">
-          <select
-            value={role}
-            onChange={handleRoleChange}
+          <input
+            type="text"
+            placeholder="Last Name"
+            value={lastName}
+            onChange={handleLastNameChange}
             required
-            name="role"
+            name="lastName"
             className="sign-up-form-control"
-          >
-            <option value="Customer">Customer</option>
-            <option value="Admin">Admin</option>
-          </select>
+          />
+        </div>
+        <div className="sign-up-form-group">
+          <input
+            type="text"
+            placeholder="First Name"
+            value={firstName}
+            onChange={handleFirstNameChange}
+            required
+            name="firstName"
+            className="sign-up-form-control"
+          />
+        </div>
+        <div className="sign-up-form-group">
+          <input
+            type="text"
+            placeholder="Phone Number"
+            value={phoneNumber}
+            onChange={handlePhoneNumberChange}
+            required
+            name="phoneNumber"
+            className="sign-up-form-control"
+          />
         </div>
         <div className="sign-up-form-group">
           <select
             value={city}
             onChange={handleCityChange}
-            required={role === "Admin"}
+            required
             name="city"
             className="sign-up-form-control"
           >
@@ -250,7 +366,7 @@ function SignUp() {
           <select
             value={streetNumber}
             onChange={handleStreetNumberChange}
-            required={role === "Admin"}
+            required
             name="streetNumber"
             className="sign-up-form-control"
           >
@@ -261,39 +377,6 @@ function SignUp() {
               </option>
             ))}
           </select>
-        </div>
-        <div className="sign-up-form-group">
-          <input
-            type="text"
-            placeholder="Last Name"
-            value={lastName}
-            onChange={handleLastNameChange}
-            required={role === "Admin"}
-            name="lastName"
-            className="sign-up-form-control"
-          />
-        </div>
-        <div className="sign-up-form-group">
-          <input
-            type="text"
-            placeholder="First Name"
-            value={firstName}
-            onChange={handleFirstNameChange}
-            required={role === "Admin"}
-            name="firstName"
-            className="sign-up-form-control"
-          />
-        </div>
-        <div className="sign-up-form-group">
-          <input
-            type="text"
-            placeholder="Phone Number"
-            value={phoneNumber}
-            onChange={handlePhoneNumberChange}
-            required
-            name="phoneNumber"
-            className="sign-up-form-control"
-          />
         </div>
         <button type="submit" className="sign-up-btn-primary">
           Sign Up
