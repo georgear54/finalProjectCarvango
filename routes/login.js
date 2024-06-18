@@ -1,6 +1,7 @@
+//login
 const express = require("express");
 const checkUser = require("../database/queries/checkUser");
-const chk = require("../database/queries/signupCheck")
+const chk = require("../database/queries/signupCheck");
 const router = express.Router();
 
 // Middleware to parse JSON and URL-encoded request bodies
@@ -30,6 +31,5 @@ router.post("/", async (req, res, next) => {
     res.status(500).send("Internal Server Error");
   }
 });
-
 
 module.exports = router;
