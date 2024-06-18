@@ -10,6 +10,7 @@ const app = express();
 // const contactRoutes = require("./routes/contact");
 // const findRoutes = require("./routes/find");
 const menuRoutes = require("./routes/menu");
+const ingredientsRoutes = require("./routes/ingredients");
 // const shopRoutes = require("./routes/shop");
 
 const PORT = process.env.PORT || 3001;
@@ -33,6 +34,7 @@ app.use((req, res, next) => {
 // app.use("/contact", contactRoutes);
 // app.use("/find", findRoutes);
 app.use("/menu", menuRoutes);
+app.use("/ingredients", ingredientsRoutes);
 // app.use("/shop", shopRoutes);
 
 // The "catchall" handler: for any request that doesn't match one above, send back React's index.html file.

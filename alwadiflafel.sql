@@ -1,3 +1,4 @@
+
 -- Create the database
 CREATE DATABASE IF NOT EXISTS alwadiflafel;
 USE alwadiflafel;
@@ -31,21 +32,22 @@ CREATE TABLE `ingredients` (
   `name` varchar(100) DEFAULT NULL,
   `quantity` decimal(10,2) DEFAULT NULL,
   `unit` varchar(10) DEFAULT NULL CHECK (`unit` in ('KG','G','ML','L','piece')),
+  `price` decimal(10,2) DEFAULT 0,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Insert data into ingredients table
-INSERT INTO ingredients (ID, name, quantity, unit) VALUES
-(1, 'Tomato', 100, 'G'),
-(2, 'Mozzarella', 200, 'G'),
-(3, 'Lettuce', 300, 'G'),
-(4, 'Chicken', 150, 'G'),
-(5, 'Beef', 250, 'G'),
-(6, 'Vegan Patty', 1, 'piece'),
-(7, 'Salmon', 200, 'G'),
-(8, 'Chocolate', 100, 'G'),
-(9, 'Potato', 500, 'G'),
-(10, 'Mushroom', 200, 'G');
+INSERT INTO ingredients (ID, name, quantity, unit, price) VALUES
+(1, 'Tomato', 100, 'G', 0.50),
+(2, 'Mozzarella', 200, 'G', 2.00),
+(3, 'Lettuce', 300, 'G', 1.00),
+(4, 'Chicken', 150, 'G', 3.50),
+(5, 'Beef', 250, 'G', 5.00),
+(6, 'Vegan Patty', 1, 'piece', 1.50),
+(7, 'Salmon', 200, 'G', 10.00),
+(8, 'Chocolate', 100, 'G', 2.50),
+(9, 'Potato', 500, 'G', 0.30),
+(10, 'Mushroom', 200, 'G', 4.00);
 
 -- Table structure for table `ingredient_dishes`
 CREATE TABLE `ingredient_dishes` (
@@ -138,21 +140,22 @@ CREATE TABLE `people` (
   `last_name` varchar(100) DEFAULT NULL,
   `first_name` varchar(100) DEFAULT NULL,
   `phone_number` varchar(20) DEFAULT NULL,
+  `password` varchar(255) NOT NULL,
   PRIMARY KEY (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Insert data into people table
-INSERT INTO people (email, role, city, street_number, last_name, first_name, phone_number) VALUES
-('john.doe@example.com', 'Customer', 'New York', '123', 'Doe', 'John', '555-1234'),
-('jane.smith@example.com', 'Customer', 'Los Angeles', '456', 'Smith', 'Jane', '555-5678'),
-('alice.jones@example.com', 'Customer', 'Chicago', '789', 'Jones', 'Alice', '555-9012'),
-('bob.brown@example.com', 'Customer', 'Houston', '321', 'Brown', 'Bob', '555-3456'),
-('carol.davis@example.com', 'Customer', 'Phoenix', '654', 'Davis', 'Carol', '555-7890'),
-('david.wilson@example.com', 'Admin', 'Philadelphia', '987', 'Wilson', 'David', '555-1234'),
-('eve.white@example.com', 'Customer', 'San Antonio', '543', 'White', 'Eve', '555-5678'),
-('frank.thomas@example.com', 'Customer', 'San Diego', '876', 'Thomas', 'Frank', '555-9012'),
-('grace.moore@example.com', 'Customer', 'Dallas', '135', 'Moore', 'Grace', '555-3456'),
-('henry.taylor@example.com', 'Customer', 'San Jose', '246', 'Taylor', 'Henry', '555-7890');
+INSERT INTO people (email, role, city, street_number, last_name, first_name, phone_number, password) VALUES
+('john.doe@example.com', 'Customer', 'New York', '123', 'Doe', 'John', '555-1234', 'password1'),
+('jane.smith@example.com', 'Customer', 'Los Angeles', '456', 'Smith', 'Jane', '555-5678', 'password2'),
+('alice.jones@example.com', 'Customer', 'Chicago', '789', 'Jones', 'Alice', '555-9012', 'password3'),
+('bob.brown@example.com', 'Customer', 'Houston', '321', 'Brown', 'Bob', '555-3456', 'password4'),
+('carol.davis@example.com', 'Customer', 'Phoenix', '654', 'Davis', 'Carol', '555-7890', 'password5'),
+('david.wilson@example.com', 'Admin', 'Philadelphia', '987', 'Wilson', 'David', '555-1234', 'password6'),
+('eve.white@example.com', 'Customer', 'San Antonio', '543', 'White', 'Eve', '555-5678', 'password7'),
+('frank.thomas@example.com', 'Customer', 'San Diego', '876', 'Thomas', 'Frank', '555-9012', 'password8'),
+('grace.moore@example.com', 'Customer', 'Dallas', '135', 'Moore', 'Grace', '555-3456', 'password9'),
+('henry.taylor@example.com', 'Customer', 'San Jose', '246', 'Taylor', 'Henry', '555-7890', 'password10');
 
 -- Table structure for table `people_orders`
 CREATE TABLE `people_orders` (
