@@ -10,9 +10,10 @@ async function addUser(userData) {
       last_name,
       first_name,
       phone_number,
+      password
     } = userData;
-    const sql = `INSERT INTO people (email, role, city, street_number, last_name, first_name, phone_number)
-                 VALUES (?, ?, ?, ?, ?, ?, ?)`;
+    const sql = `INSERT INTO people (email, role, city, street_name, last_name, first_name, phone_number,password)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
     const params = [
       email,
       role,
@@ -21,6 +22,7 @@ async function addUser(userData) {
       last_name,
       first_name,
       phone_number,
+      password,
     ];
     const result = await doQuery(sql, params);
     return result;
