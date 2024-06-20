@@ -1,3 +1,4 @@
+//menu
 const express = require("express");
 const router = express.Router();
 const doQuery = require("../database/query");
@@ -28,8 +29,3 @@ router.get("/", async (req, res) => {
 module.exports = router;
 
 
-router.get("/menu", (req, res) => {
-  res.send("menu page");
-});
-
-module.exports = router;

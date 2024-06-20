@@ -9,8 +9,10 @@ const app = express();
 // const cateringRoutes = require("./routes/catering");
 // const contactRoutes = require("./routes/contact");
 // const findRoutes = require("./routes/find");
+
 const menuRoutes = require("./routes/menu");
 const ingredientsRoutes = require("./routes/ingredients");
+const signUpRoutes = require("./routes/register");
 // const shopRoutes = require("./routes/shop");
 
 const PORT = process.env.PORT || 3001;
@@ -28,12 +30,14 @@ app.use((req, res, next) => {
 });
 
 // Define route handlers
-// app.use("/about", aboutRoutes);
 // app.use("/book", bookRoutes);
 // app.use("/catering", cateringRoutes);
 // app.use("/contact", contactRoutes);
 // app.use("/find", findRoutes);
 app.use("/menu", menuRoutes);
+
+app.use("/signUp", signUpRoutes);
+
 app.use("/ingredients", ingredientsRoutes);
 // app.use("/shop", shopRoutes);
 
