@@ -1,7 +1,8 @@
+//cartjsx
 import React, { useContext, useState } from "react";
 import { CartContext } from "../../contexts/CartContext";
 import classes from "./cart.module.css";
-import IngredientsModal from "../IngredientModal/IngredientModal";
+import IngredientsModal from "../IngredientModal/IngredientsModal";
 
 const Cart = () => {
   const { cart, dispatch } = useContext(CartContext);

@@ -51,7 +51,7 @@
 }
 
 .active a {
-  background-color: rgb(8, 59, 60); /* Set background color on active link */
+  /* background-color: rgb(8, 59, 60); Set background color on active link */
   color: white; /* Set active link text color to white */
   border-radius: 5px;
 }

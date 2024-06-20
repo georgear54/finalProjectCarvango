@@ -1,33 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./signUp.modules.css";
 
 function SignUp() {
   // State variables
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [role, setRole] = useState("Customer");
+  const [city, setCity] = useState("");
+  const [cities, setCities] = useState([]);
+  const [streetNumber, setStreetNumber] = useState("");
+  const [streets, setStreets] = useState([]);
+  const [lastName, setLastName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
+  const [retypePassword, setRetypePassword] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   // State variables for validation
-  const [usernameValidation, setUsernameValidation] = useState({});
-  const [passwordValidation, setPasswordValidation] = useState({});
-  const [firstNameValidation, setFirstNameValidation] = useState({});
-  const [lastNameValidation, setLastNameValidation] = useState({});
   const [emailValidation, setEmailValidation] = useState({});
+  const [passwordValidation, setPasswordValidation] = useState({});
+  const [retypePasswordValidation, setRetypePasswordValidation] = useState({});
 
-  // Regular expressions for email and password validation
+  // Regular expressions for validation
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/;
 
-  // Validate username
-  const validateUsername = (username) => {
+  // Validate email
+  const validateEmail = (email) => {
     const validationAnswer = {};
-    if (username.length < 3) {
+    if (!emailPattern.test(email)) {
       validationAnswer.status = false;
-      validationAnswer.text = "The username must contain at least 3 characters";
+      validationAnswer.text = "Invalid email address";
     } else {
       validationAnswer.status = true;
       validationAnswer.text = "Validation successful";
@@ -49,185 +54,214 @@ function SignUp() {
     return validationAnswer;
   };
 
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const userData = {
-      username,
-      password,
-      firstName,
-      lastName,
-      email,
-    };
-
-    try {
-      const response = await fetch("/register/checkSignup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username }),
-      });
-
-      if (!response.ok) {
-        setUsername("");
-        setPassword("");
-        setFirstName("");
-        setLastName("");
-        setEmail("");
-        // Display error message or handle as needed
-        setErrorMessage("an Account with this Username already exists!!!");
-
-        setTimeout(() => {
-          setErrorMessage("");
-        }, 3500);
-        throw new Error("Network response was not ok");
-      }
-
-      let data = await response.json();
-
-      console.log("Response from server:", data);
-    } catch (error) {
-      console.error("Error:", error);
-      // Handle error
-      return;
+  // Validate retype password
+  const validateRetypePassword = (password, retypePassword) => {
+    const validationAnswer = {};
+    if (password !== retypePassword) {
+      validationAnswer.status = false;
+      validationAnswer.text = "Passwords do not match";
+    } else {
+      validationAnswer.status = true;
+      validationAnswer.text = "Passwords match";
     }
-
-    console.log(
-      "-----------------------------------------------------------------------------------------------"
-    );
-    try {
-      const response = await fetch("/register/add-user", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const data = await response.status;
-      console.log("Response from server:", data);
-      setSuccessMessage("You have successfully signed up.");
-      if (data === 200) {
-        window.location.href = "/login";
-      }
-      // Handle response data as needed
-    } catch (error) {
-      console.error("Error:", error);
-      // Handle error
-    }
+    return validationAnswer;
   };
 
+  // Fetch cities data on component mount
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const response = await axios.get(
+          "https://data.gov.il/api/3/action/datastore_search",
+          {
+            params: {
+              resource_id: "5c78e9fa-c2e2-4771-93ff-7f400a12f7ba",
+              limit: 32000,
+            },
+          }
+        );
+        const cityNames = response.data.result.records.map((record) =>
+          record["שם_ישוב"].trim()
+        );
+        setCities(cityNames);
+      } catch (error) {
+        console.error("Error fetching cities data:", error);
+      }
+    };
+    fetchCities();
+  }, []);
+
+  // Fetch streets data based on selected city
+  useEffect(() => {
+    const fetchStreets = async () => {
+      if (city) {
+        try {
+          const response = await axios.get(
+            "https://data.gov.il/api/3/action/datastore_search",
+            {
+              params: {
+                resource_id: "a7296d1a-f8c9-4b70-96c2-6ebb4352f8e3",
+                limit: 32000,
+                q: city,
+              },
+            }
+          );
+          const streetNames = response.data.result.records.map((record) =>
+            record["שם_רחוב"].trim()
+          );
+          setStreets(streetNames);
+        } catch (error) {
+          console.error("Error fetching streets data:", error);
+        }
+      }
+    };
+    fetchStreets();
+  }, [city]);
+
   // Handle input changes
-  const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
-    setUsernameValidation(validateUsername(e.target.value));
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    setEmailValidation(validateEmail(e.target.value));
   };
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
     setPasswordValidation(validatePassword(e.target.value));
+    setRetypePasswordValidation(
+      validateRetypePassword(e.target.value, retypePassword)
+    );
   };
 
-  const handleFirstNameChange = (e) => {
-    setFirstName(e.target.value);
-    // Validation for first name if needed
+  const handleRetypePasswordChange = (e) => {
+    setRetypePassword(e.target.value);
+    setRetypePasswordValidation(
+      validateRetypePassword(password, e.target.value)
+    );
+  };
+
+  const handleRoleChange = (e) => {
+    setRole(e.target.value);
+  };
+
+  const handleCityChange = async (e) => {
+    const selectedCity = e.target.value;
+    setCity(selectedCity);
+    setStreets([]); // Clear streets when a new city is selected
+
+    try {
+      const response = await axios.get(
+        "https://data.gov.il/api/3/action/datastore_search",
+        {
+          params: {
+            resource_id: "a7296d1a-f8c9-4b70-96c2-6ebb4352f8e3",
+            limit: 32000,
+            q: selectedCity,
+          },
+        }
+      );
+      const streetNames = response.data.result.records.map((record) =>
+        record["שם_רחוב"].trim()
+      );
+      setStreets(streetNames);
+    } catch (error) {
+      console.error("Error fetching streets data:", error);
+    }
+  };
+
+  const handleStreetNumberChange = (e) => {
+    setStreetNumber(e.target.value);
   };
 
   const handleLastNameChange = (e) => {
     setLastName(e.target.value);
-    // Validation for last name if needed
   };
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-    // Validation for email
-    const validationAnswer = {};
-    if (!emailPattern.test(e.target.value)) {
-      validationAnswer.status = false;
-      validationAnswer.text = "Invalid email address";
-    } else {
-      validationAnswer.status = true;
-      validationAnswer.text = "Validation successful";
+  const handleFirstNameChange = (e) => {
+    setFirstName(e.target.value);
+  };
+
+  const handlePhoneNumberChange = (e) => {
+    setPhoneNumber(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const userData = {
+      email,
+      password,
+      role,
+      city,
+      street_number: streetNumber,
+      last_name: lastName,
+      first_name: firstName,
+      phone_number: phoneNumber,
+    };
+
+    try {
+      // First, check if the email already exists
+      const checkResponse = await axios.post(
+        "http://localhost:3001/signUp/checkSignup",
+        { email, phoneNumber }
+      );
+
+      if (checkResponse.status !== 200 || !checkResponse.data.success) {
+        setErrorMessage(
+          checkResponse.data.message ||
+            "An account with this email already exists!!!"
+        );
+        setTimeout(() => {
+          setErrorMessage("");
+        }, 3500);
+        return;
+      }
+
+      // If the email check is successful, proceed to register the user
+      const registerResponse = await axios.post(
+        "http://localhost:3001/signUp/add-user",
+        userData
+      );
+
+      if (registerResponse.status === 200) {
+        setSuccessMessage("You have successfully signed up.");
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 1500);
+      } else {
+        throw new Error("Failed to register the user");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      if (error.response && error.response.status === 409) {
+        setErrorMessage("An account with this email already exists!!!");
+      } else {
+        setErrorMessage(
+          "An error occurred during registration. Please try again."
+        );
+      }
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 3500);
     }
-    setEmailValidation(validationAnswer);
   };
 
   return (
     <div className="sign-up-container">
       <h2 className="text-center">Sign Up</h2>
       <form onSubmit={handleSubmit} className="sign-up-form">
-        {/* Input fields with corresponding change handlers */}
         <div className="sign-up-form-group">
-          <label className="sign-up-form-group-label">Username:</label>
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={handleUsernameChange}
+          <select
+            value={role}
+            onChange={handleRoleChange}
             required
-            name="username"
+            name="role"
             className="sign-up-form-control"
-          />
-          {errorMessage && (
-            <span className="sign-up-error-message">{errorMessage}</span>
-          )}
-          {!usernameValidation.status && (
-            <span className="sign-up-error-message">
-              {usernameValidation.text}
-            </span>
-          )}
+          >
+            <option value="Customer">Customer</option>
+            <option value="Admin">Admin</option>
+          </select>
         </div>
         <div className="sign-up-form-group">
-          <label className="sign-up-form-group-label">Password:</label>
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={handlePasswordChange}
-            required
-            name="password"
-            className="sign-up-form-control"
-          />
-          {!passwordValidation.status && (
-            <span className="sign-up-error-message">
-              {passwordValidation.text}
-            </span>
-          )}
-        </div>
-        <div className="sign-up-form-group">
-          <label className="sign-up-form-group-label">First Name:</label>
-          <input
-            type="text"
-            placeholder="First Name"
-            value={firstName}
-            onChange={handleFirstNameChange}
-            required
-            name="firstName"
-            className="sign-up-form-control"
-          />
-          {/* Validation for first name if needed */}
-        </div>
-        <div className="sign-up-form-group">
-          <label className="sign-up-form-group-label">Last Name:</label>
-          <input
-            type="text"
-            placeholder="Last Name"
-            value={lastName}
-            onChange={handleLastNameChange}
-            required
-            name="lastName"
-            className="sign-up-form-control"
-          />
-          {/* Validation for last name if needed */}
-        </div>
-        <div className="sign-up-form-group">
-          <label className="sign-up-form-group-label">Email:</label>
           <input
             type="email"
             placeholder="Email"
@@ -243,9 +277,116 @@ function SignUp() {
             </span>
           )}
         </div>
+        {role === "Admin" && (
+          <>
+            <div className="sign-up-form-group">
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={handlePasswordChange}
+                required
+                name="password"
+                className="sign-up-form-control"
+              />
+              {!passwordValidation.status && (
+                <span className="sign-up-error-message">
+                  {passwordValidation.text}
+                </span>
+              )}
+            </div>
+            <div className="sign-up-form-group">
+              <input
+                type="password"
+                placeholder="Retype Password"
+                value={retypePassword}
+                onChange={handleRetypePasswordChange}
+                required
+                name="retypePassword"
+                className="sign-up-form-control"
+              />
+              {!retypePasswordValidation.status && (
+                <span className="sign-up-error-message">
+                  {retypePasswordValidation.text}
+                </span>
+              )}
+            </div>
+          </>
+        )}
+        <div className="sign-up-form-group">
+          <input
+            type="text"
+            placeholder="Last Name"
+            value={lastName}
+            onChange={handleLastNameChange}
+            required
+            name="lastName"
+            className="sign-up-form-control"
+          />
+        </div>
+        <div className="sign-up-form-group">
+          <input
+            type="text"
+            placeholder="First Name"
+            value={firstName}
+            onChange={handleFirstNameChange}
+            required
+            name="firstName"
+            className="sign-up-form-control"
+          />
+        </div>
+        <div className="sign-up-form-group">
+          <input
+            type="text"
+            placeholder="Phone Number"
+            value={phoneNumber}
+            onChange={handlePhoneNumberChange}
+            required
+            name="phoneNumber"
+            className="sign-up-form-control"
+          />
+        </div>
+        <div className="sign-up-form-group">
+          <select
+            value={city}
+            onChange={handleCityChange}
+            required
+            name="city"
+            className="sign-up-form-control"
+          >
+            <option value="">Select City</option>
+            {cities.map((cityName) => (
+              <option key={cityName} value={cityName}>
+                {cityName}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="sign-up-form-group">
+          <select
+            value={streetNumber}
+            onChange={handleStreetNumberChange}
+            required
+            name="streetNumber"
+            className="sign-up-form-control"
+          >
+            <option value="">Select Street</option>
+            {streets.map((streetName) => (
+              <option key={streetName} value={streetName}>
+                {streetName}
+              </option>
+            ))}
+          </select>
+        </div>
         <button type="submit" className="sign-up-btn-primary">
           Sign Up
         </button>
+        {errorMessage && (
+          <span className="sign-up-error-message">{errorMessage}</span>
+        )}
+        {successMessage && (
+          <span className="sign-up-success-message">{successMessage}</span>
+        )}
       </form>
     </div>
   );

@@ -1,34 +1,61 @@
 import React, { useState } from "react";
 import { Navigate, Link } from "react-router-dom"; // Import Navigate from React Router
+import axios from "axios";
 import "./logIn.modules.css";
 
 function LogIn(props) {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
   const [loginError, setLoginError] = useState(false); // New state for login error
+  const [emailValidation, setEmailValidation] = useState({});
+  const [passwordValidation, setPasswordValidation] = useState({});
 
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/;
+
+  const validateEmail = (email) => {
+    const validationAnswer = {};
+    if (!emailPattern.test(email)) {
+      validationAnswer.status = false;
+      validationAnswer.text = "Invalid email address";
+    } else {
+      validationAnswer.status = true;
+      validationAnswer.text = "Validation successful";
+    }
+    return validationAnswer;
   };
 
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
+  // const validatePassword = (password) => {
+  //   const validationAnswer = {};
+  //   if (!passwordPattern.test(password)) {
+  //     validationAnswer.status = false;
+  //     validationAnswer.text =
+  //       "Password must contain at least 8 characters, including uppercase, lowercase, and a number";
+  //   } else {
+  //     validationAnswer.status = true;
+  //     validationAnswer.text = "Validation successful";
+  //   }
+  //   return validationAnswer;
+  // };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    setEmailValidation(validateEmail(e.target.value));
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    // setPasswordValidation(validatePassword(e.target.value));
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const toSend = { username: username, password: password };
+    const toSend = { email: email, password: password };
 
     console.log(toSend);
     try {
-      const res = await fetch(`/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(toSend),
-      });
+      const res = await axios.post(`http://localhost:3001/login`, toSend);
 
       if (res.status === 200) {
         // If login is successful, set loggedIn state to true
@@ -53,13 +80,13 @@ function LogIn(props) {
     }
 
     // Reset form fields
-    setUsername("");
+    setEmail("");
     setPassword("");
   };
-  
+
   // If user is logged in, navigate to the home page
   if (loggedIn) {
-    window.location.href="/home";
+    window.location.href = "/home";
   }
 
   return (
@@ -67,18 +94,19 @@ function LogIn(props) {
       <h2>Login</h2>
       <form onSubmit={handleSubmit} className="login-form">
         <div className="form-group">
-          <label htmlFor="username">Username:</label>
           <input
-            type="text"
-            name="username"
-            value={username}
-            onChange={handleUsernameChange}
+            type="email"
+            name="email"
+            value={email}
+            onChange={handleEmailChange}
             required
-            placeholder="UserName"
+            placeholder="Email"
           />
+          {!emailValidation.status && (
+            <span className="error-message">{emailValidation.text}</span>
+          )}
         </div>
         <div className="form-group">
-          <label htmlFor="password">Password:</label>
           <input
             type="password"
             name="password"
@@ -87,10 +115,15 @@ function LogIn(props) {
             required
             placeholder="Password"
           />
+          {!passwordValidation.status && (
+            <span className="error-message">{passwordValidation.text}</span>
+          )}
         </div>
         <button type="submit">Login</button>
         {loginError && (
-          <p>Error logging in: password or username is incorrect </p>
+          <p className="error-message">
+            Error logging in: password or email is incorrect
+          </p>
         )}
         {/* Add link to the sign-up page */}
         <p>
