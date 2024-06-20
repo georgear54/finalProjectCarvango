@@ -13,7 +13,7 @@ const ingredientsRoutes = require("./routes/ingredients");
 
 const menuRoutes = require("./routes/menu");
 const signUpRoutes = require("./routes/register");
-// const shopRoutes = require("./routes/shop");
+const logInRoutes = require("./routes/login");
 
 const PORT = process.env.PORT || 3001;
 
@@ -37,7 +37,7 @@ app.use((req, res, next) => {
 app.use("/menu", menuRoutes);
 app.use("/signUp", signUpRoutes);
 app.use("/ingredients", ingredientsRoutes);
-// app.use("/shop", shopRoutes);
+app.use("/logIn", logInRoutes);
 
 // The "catchall" handler: for any request that doesn't match one above, send back React's index.html file.
 app.get("*", (req, res) => {

@@ -8,17 +8,18 @@ router.post("/add-user", async (req, res, next) => {
   console.log("in /register/add-user POST");
   try {
     const user = req.body;
-    if (
-      !user.email ||
-      !user.role ||
-      !user.city ||
-      !user.street_number ||
-      !user.last_name ||
-      !user.first_name ||
-      !user.phone_number
-    ) {
-      throw new Error("Required fields missing");
-    }
+    // if (
+    //   !user.email ||
+    //   !user.role ||
+    //   !user.city ||
+    //   !user.street_number ||
+    //   !user.last_name ||
+    //   !user.first_name ||
+    //   !user.phone_number||
+    //   !user.password
+    // ) {
+    //   throw new Error("Required fields missing");
+    // }
 
     await addUser(user);
     res.sendStatus(200);
