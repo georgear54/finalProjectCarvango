@@ -1,0 +1,33 @@
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.menuButton {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.content {
+  margin-left: 0;
+  transition: margin-left 0.3s ease;
+  padding: 20px; /* Ensure content does not stick to the edges */
+}
+
+.contentShift {
+  margin-left: 250px; /* Shifted when sidebar is open */
+  transition: margin-left 0.3s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .contentShift {
+    margin-left: 0;
+  }
+}

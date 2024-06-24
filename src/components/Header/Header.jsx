@@ -4,7 +4,7 @@ import NavCase from "./nav/navCase";
 export default function Header({flag}) {
   return (
     <header className={classes.Header}>
-      <NavCase flag={flag}/>
+      <Nav/>
     </header>
   );
 }
