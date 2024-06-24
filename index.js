@@ -1,50 +1,58 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+const session = require("express-session");
 
-// Create an Express application instance
 const app = express();
 
-// // const bookRoutes = require("./routes/book");
-// const cateringRoutes = require("./routes/catering");
-// const contactRoutes = require("./routes/contact");
-// const findRoutes = require("./routes/find");
+const cateringRoutes = require("./routes/catering");
 const ingredientsRoutes = require("./routes/ingredients");
-
 const menuRoutes = require("./routes/menu");
 const signUpRoutes = require("./routes/register");
 const logInRoutes = require("./routes/login");
+const dashboardRoutes = require("./routes/dashboard");
 
 const PORT = process.env.PORT || 3001;
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3002", // Change this to your frontend origin
+    credentials: true, // Allow credentials/cookies to be included
+  })
+);
 app.use(express.json());
 
-// Serve static files from the React app
+app.use(
+  session({
+    secret: "123123", // Change this to a strong secret key
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: false, // Set to true if using HTTPS
+      maxAge: 5000
+      ,
+    },
+  })
+);
+
 app.use(express.static(path.join(__dirname, "fe")));
 
-// Middleware to log incoming requests
 app.use((req, res, next) => {
   console.log(req.url + " url");
   next();
 });
 
-// Define route handlers
-// app.use("/book", bookRoutes);
-// app.use("/catering", cateringRoutes);
-// app.use("/contact", contactRoutes);
-// app.use("/find", findRoutes);
+app.use("/catering", cateringRoutes);
 app.use("/menu", menuRoutes);
 app.use("/signUp", signUpRoutes);
 app.use("/ingredients", ingredientsRoutes);
 app.use("/logIn", logInRoutes);
+app.use("/dashboard", dashboardRoutes);
 
-// The "catchall" handler: for any request that doesn't match one above, send back React's index.html file.
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname + "/fe/build/index.html"));
 });
 
-// Start the server and listen on the specified port
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
