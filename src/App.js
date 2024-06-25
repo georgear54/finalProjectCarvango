@@ -12,6 +12,7 @@ import Cart from "./components/cart/Cart";
 import MainDashboard from "./components/dashboard/mainDashboard/mainDashboard.jsx";
 import SignUp from "./components/signUp/signUp.jsx";
 import PrivateRoute from "./contexts/privateRoute.jsx";
+import Payment from "./components/Payment/Payment.jsx";
 
 function App() {
   let flag = true;
@@ -36,7 +37,9 @@ function App() {
           <Route path="/catering" element={<Catering />} />
           <Route path="/logIn" element={<LogIn />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/signUp" element={<SignUp/>} />
+          <Route path="/signUp" element={<SignUp />} />
+          <Route path="/payment" element={<Payment />} />
+
           <Route
             path="/dashboard"
             element={
