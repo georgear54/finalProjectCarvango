@@ -17,6 +17,10 @@ const imageMap = {
   "Mushroom Risotto": require("../../assets/imgs/jMeal.jpg.png"),
 };
 
+const sortIngredients = (ingredients) => {
+  return [...ingredients].sort((a, b) => a.name.localeCompare(b.name));
+};
+
 const MenuPage = () => {
   const [meals, setMeals] = useState([]);
   const [error, setError] = useState(null);
@@ -32,7 +36,8 @@ const MenuPage = () => {
         setMeals(
           response.data.map((meal) => ({
             ...meal,
-            img: imageMap[meal.name] || "../../assets/imgs/aMeal.jpg.png",
+            img: imageMap[meal.name] || "../../assets/imgs/defaultMeal.jpg",
+            price: parseFloat(meal.price), // Ensure price is a number
           }))
         );
       })
@@ -48,10 +53,12 @@ const MenuPage = () => {
   };
 
   const handleAddIngredients = (mealWithIngredients) => {
+    mealWithIngredients.ingredients = sortIngredients(
+      mealWithIngredients.ingredients
+    );
     dispatch({ type: "ADD_TO_CART", payload: mealWithIngredients });
     console.log(`${mealWithIngredients.name} added to cart!`);
     setShowModal(false);
-    setSelectedMeal(null);
   };
 
   const closeModal = () => {
@@ -77,8 +84,8 @@ const MenuPage = () => {
               <div className={classes.mealInfo}>
                 <h2>{meal.name}</h2>
                 <p>{meal.description}</p>
-                <p>Allergies: {meal.allergies}</p>
-                <p>Price: ${parseFloat(meal.price).toFixed(2)}</p>
+                <p>{meal.allergies}</p>
+                <p>${meal.price.toFixed(2)}</p> {/* Ensure price is a number */}
                 <button
                   onClick={() => handleAddToCart(meal)}
                   className={classes.buyButton}

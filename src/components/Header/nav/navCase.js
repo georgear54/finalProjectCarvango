@@ -9,6 +9,7 @@ import FindTruck from "../../findTruck/FindTruck";
 import Cart from "../../cart/Cart"; // Import Cart
 import SignUp from '../../signUp/signUp.jsx'; // Import Shop
 import LogIn from "../../logIn/logIn";
+import Payment from "../../Payment/Payment.jsx";
 // import OrderOnline from "../../orderOnline/OrderOnline"; // Import OrderOnline
 
 function NavCase({ flag }) {
@@ -29,6 +30,7 @@ function NavCase({ flag }) {
           <Route path="/signUp" element={<SignUp />} /> {/* Add cart route */}
           <Route path="*" element={<Navigate to="/home" />} />
           <Route path="*" element={<Navigate to="/home" />} />
+          <Route path="/payment" element={<Payment />} />
         </Routes>
       </div>
     </div>
