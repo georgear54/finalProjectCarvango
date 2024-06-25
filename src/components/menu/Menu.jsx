@@ -22,6 +22,7 @@ const MenuPage = () => {
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedMeal, setSelectedMeal] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const { dispatch } = useContext(CartContext);
 
   useEffect(() => {
@@ -59,15 +60,30 @@ const MenuPage = () => {
     setSelectedMeal(null);
   };
 
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredMeals = meals.filter((meal) =>
+    meal.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className={classes.menuPage}>
       <header className={classes.menuHeader}>
         <h1>Our Menu</h1>
+        <input
+          type="text"
+          placeholder="Search for food..."
+          value={searchTerm}
+          onChange={handleSearch}
+          className={classes.searchBar}
+        />
       </header>
       <main className={classes.menuMain}>
         {error && <div className={classes.error}>{error}</div>}
         <div className={classes.foodGrid}>
-          {meals.map((meal) => (
+          {filteredMeals.map((meal) => (
             <div key={meal.ID} className={classes.mealItem}>
               <img
                 src={meal.img}
