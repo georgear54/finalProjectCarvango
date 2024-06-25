@@ -7,7 +7,7 @@ const doQuery = require("../query");
 
  * @returns {boolean} True if the user exists, false otherwise
  */
-async function checkUser(email,password) {
+async function checkUserLogIn(email, password) {
   try {
     // Perform a query to check if the user exists based on the provided username and password
     const sql = `SELECT * FROM people WHERE email = ? AND password = ? `;
@@ -22,4 +22,4 @@ async function checkUser(email,password) {
   }
 }
 
-module.exports = checkUser;
+module.exports = checkUserLogIn;

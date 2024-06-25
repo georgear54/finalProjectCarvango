@@ -1,6 +1,7 @@
 const express = require("express");
 const { addUser } = require("../database/queries/add-user");
 const checkUser = require("../database/queries/signupCheck");
+const checkUserLogIn = require("../database/queries/checkUserLogIn");
 const router = express.Router();
 router.use(express.json());
 
@@ -41,6 +42,22 @@ router.post("/checkSignup", async (req, res, next) => {
       console.log("p❤️❤️❤️");
     } else {
       res.status(409).json({ success: false });
+    }
+  } catch (error) {
+    console.error("Error during checking user:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/checkLogin", async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const userExists = await checkUserLogIn(email, password);
+
+    if (userExists) {
+      res.status(200).json({ success: true });
+    } else {
+      res.status(401).json({ success: false });
     }
   } catch (error) {
     console.error("Error during checking user:", error);
