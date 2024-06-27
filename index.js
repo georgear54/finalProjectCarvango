@@ -8,7 +8,7 @@ const app = express();
 const cateringRoutes = require("./routes/catering");
 const ingredientsRoutes = require("./routes/ingredients");
 const menuRoutes = require("./routes/menu");
-const signUpRoutes = require("./routes/register");
+const registerRoutes = require("./routes/register"); // updated route name
 const logInRoutes = require("./routes/login");
 const dashboardRoutes = require("./routes/dashboard");
 
@@ -29,8 +29,7 @@ app.use(
     saveUninitialized: true,
     cookie: {
       secure: false, // Set to true if using HTTPS
-      maxAge: 5000
-      ,
+      maxAge: 5000,
     },
   })
 );
@@ -44,7 +43,7 @@ app.use((req, res, next) => {
 
 app.use("/catering", cateringRoutes);
 app.use("/menu", menuRoutes);
-app.use("/signUp", signUpRoutes);
+app.use("/register", registerRoutes); // updated route
 app.use("/ingredients", ingredientsRoutes);
 app.use("/logIn", logInRoutes);
 app.use("/dashboard", dashboardRoutes);
