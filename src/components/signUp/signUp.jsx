@@ -193,15 +193,15 @@ function SignUp() {
       role,
       city,
       street_number: streetNumber,
-      last_name: lastName,
-      first_name: firstName,
+      lastName: lastName,
+      firstName: firstName,
       phone_number: phoneNumber,
     };
 
     try {
       // First, check if the email already exists
       const checkResponse = await axios.post(
-        "http://localhost:3001/signUp/checkSignup",
+        "http://localhost:3001/register/checkSignup",
         { email, phoneNumber }
       );
 
@@ -218,7 +218,7 @@ function SignUp() {
 
       // If the email check is successful, proceed to register the user
       const registerResponse = await axios.post(
-        "http://localhost:3001/signUp/add-user",
+        "http://localhost:3001/register/add-user",
         userData
       );
 
